@@ -48,8 +48,8 @@ export const signupValidation = withErrorMessage([
     body("phoneNumber")
         .notEmpty()
         .withMessage("Phone number is required")
-        .matches(/^(\+234|0)[7-9]\d{8}$/)
-        .withMessage("Invalid phone number. It must start with +234 or 0 and be followed by 10 digits"),
+        .matches(/^(\+234|0)[7-9]\d{9}$/)
+        .withMessage("Invalid phone number."),
 
     body("referralSource")
         .notEmpty()

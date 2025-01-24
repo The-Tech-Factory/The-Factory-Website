@@ -1,8 +1,15 @@
 import User from "../models/auth.model.js"
+import jwt from "jsonwebtoken"
+import { generateTokenAndCookie } from "../utils/generateTokenAndCookie.js"
+import { sendWelcomeEmail } from "../lib/mail.js"
 
 export const authController = async (req, res) => {
     try {
-        const user = await (await User.create(req.body))
+        const user = await User.create(req.body)
+
+        generateTokenAndCookie(res, user._id)
+        
+        await sendWelcomeEmail(user.email, user.firstName)
 
         user.password = undefined
 
@@ -13,7 +20,6 @@ export const authController = async (req, res) => {
         })
     } catch (error) {
         console.log("Error creating user", error.message);
-        res.status(500).json({ message: "Error creating user" })
-        
+        res.status(500).json({ message: "Error creating user" }) 
     }
 }
